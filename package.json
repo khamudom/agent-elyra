@@ -1,0 +1,40 @@
+{
+  "name": "agentic-assistant",
+  "version": "1.0.0",
+  "description": "An agentic assistant app with 3D avatar using Three.js, works as PWA and Chrome Extension",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npx tsc && vite build && npm run build:extension",
+    "build:extension": "npx tsc && vite build --config vite.extension.config.ts",
+    "preview": "vite preview",
+    "type-check": "npx tsc --noEmit"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.158.0",
+    "openai": "^4.20.1"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.1.1",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@types/three": "^0.158.3",
+    "@vitejs/plugin-react": "^4.1.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0",
+    "vite-plugin-pwa": "^0.17.4"
+  },
+  "keywords": [
+    "agentic",
+    "assistant",
+    "threejs",
+    "pwa",
+    "chrome-extension",
+    "react",
+    "typescript"
+  ],
+  "author": "Agentic Assistant Team",
+  "license": "MIT"
+}
