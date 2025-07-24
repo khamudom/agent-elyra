@@ -6,10 +6,49 @@ import VoiceSelector from "../components/VoiceSelector";
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallButton, setShowInstallButton] = useState(false);
 
   useEffect(() => {
     // Check if user is on desktop
     setIsDesktop(window.innerWidth > 768);
+
+    // Handle PWA install prompt
+    const handleBeforeInstallPrompt = (e: Event) => {
+      console.log("beforeinstallprompt event fired");
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      setDeferredPrompt(e);
+      // Show the install button
+      setShowInstallButton(true);
+    };
+
+    // Handle successful installation
+    const handleAppInstalled = () => {
+      console.log("PWA was installed");
+      setShowInstallButton(false);
+      setDeferredPrompt(null);
+    };
+
+    // Check if PWA is already installed
+    if (
+      window.matchMedia &&
+      window.matchMedia("(display-mode: standalone)").matches
+    ) {
+      console.log("App is running in standalone mode (already installed)");
+    }
+
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+    window.addEventListener("appinstalled", handleAppInstalled);
+
+    return () => {
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt
+      );
+      window.removeEventListener("appinstalled", handleAppInstalled);
+    };
   }, []);
 
   useEffect(() => {
@@ -24,10 +63,30 @@ const App: React.FC = () => {
     };
   }, []);
 
-  const handleInstallPWA = () => {
-    // PWA installation is handled by the browser's install prompt
-    // This will trigger the browser's native PWA install dialog
-    console.log("PWA install requested");
+  const handleInstallPWA = async () => {
+    if (!deferredPrompt) {
+      // Fallback for browsers that don't support beforeinstallprompt
+      alert(
+        "To install this app, look for the 'Add to Home Screen' option in your browser's menu."
+      );
+      return;
+    }
+
+    // Show the install prompt
+    deferredPrompt.prompt();
+
+    // Wait for the user to respond to the prompt
+    const { outcome } = await deferredPrompt.userChoice;
+
+    if (outcome === "accepted") {
+      console.log("User accepted the install prompt");
+    } else {
+      console.log("User dismissed the install prompt");
+    }
+
+    // Clear the deferredPrompt
+    setDeferredPrompt(null);
+    setShowInstallButton(false);
   };
 
   const handleDownloadExtension = () => {
@@ -64,16 +123,27 @@ const App: React.FC = () => {
               </p>
 
               <div className="install-options">
-                <div className="install-option">
-                  <h4>📱 Mobile & Desktop PWA</h4>
-                  <p>
-                    Install as a native app on your device for the best
-                    experience.
-                  </p>
-                  <button className="btn pwa-btn" onClick={handleInstallPWA}>
-                    📲 Install PWA
-                  </button>
-                </div>
+                {showInstallButton ? (
+                  <div className="install-option">
+                    <h4>📱 Mobile & Desktop PWA</h4>
+                    <p>
+                      Install as a native app on your device for the best
+                      experience.
+                    </p>
+                    <button className="btn pwa-btn" onClick={handleInstallPWA}>
+                      📲 Install PWA
+                    </button>
+                  </div>
+                ) : (
+                  <div className="install-option">
+                    <h4>📱 Mobile & Desktop PWA</h4>
+                    <p>
+                      This app can be installed as a PWA. Look for the "Add to
+                      Home Screen" option in your browser's menu, or the install
+                      button will appear here when the app is ready to install.
+                    </p>
+                  </div>
+                )}
 
                 {isDesktop && (
                   <div className="install-option">

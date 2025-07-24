@@ -1,41 +1,46 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import { VitePWA } from 'vite-plugin-pwa'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: "autoUpdate",
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,jpg}"],
       },
       manifest: {
-        name: 'Agentic Assistant',
-        short_name: 'Agentic',
-        description: 'An intelligent 3D assistant',
-        theme_color: '#ffffff',
-        background_color: '#ffffff',
-        display: 'standalone',
+        name: "Agentic Assistant",
+        short_name: "Agentic",
+        description: "An intelligent 3D assistant with Three.js avatar",
+        theme_color: "#000000",
+        background_color: "#ffffff",
+        display: "standalone",
+        start_url: "/",
+        scope: "/",
+        orientation: "portrait-primary",
         icons: [
           {
-            src: 'pwa-192x192.png',
-            sizes: '192x192',
-            type: 'image/png'
+            src: "foxicon.jpg",
+            sizes: "192x192",
+            type: "image/jpeg",
+            purpose: "any",
           },
           {
-            src: 'pwa-512x512.png',
-            sizes: '512x512',
-            type: 'image/png'
-          }
-        ]
-      }
-    })
+            src: "foxicon.jpg",
+            sizes: "512x512",
+            type: "image/jpeg",
+            purpose: "any",
+          },
+        ],
+      },
+    }),
   ],
   build: {
-    outDir: 'dist',
+    outDir: "dist",
     sourcemap: false, // Disable sourcemaps for production
-    minify: 'terser', // Use terser for better minification
+    minify: "terser", // Use terser for better minification
     terserOptions: {
       compress: {
         drop_console: true, // Remove console.log statements
@@ -47,21 +52,21 @@ export default defineConfig({
       output: {
         manualChunks: (id) => {
           // Split vendor dependencies into separate chunks
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom')) {
-              return 'react-vendor';
+          if (id.includes("node_modules")) {
+            if (id.includes("react") || id.includes("react-dom")) {
+              return "react-vendor";
             }
-            if (id.includes('three')) {
-              return 'three-vendor';
+            if (id.includes("three")) {
+              return "three-vendor";
             }
-            return 'vendor';
+            return "vendor";
           }
-        }
-      }
-    }
+        },
+      },
+    },
   },
   // Optimize dependencies
   optimizeDeps: {
-    include: ['react', 'react-dom', 'three']
-  }
-}) 
+    include: ["react", "react-dom", "three"],
+  },
+});
