@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { startAgent, cleanupAgent } from '../agent';
-import ChatInterface from '../components/ChatInterface';
+import React, { useEffect, useRef, useState } from "react";
+import { startAgent, cleanupAgent } from "../agent";
+import ChatInterface from "../components/ChatInterface";
+import VoiceSelector from "../components/VoiceSelector";
 
 const App: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -14,7 +15,7 @@ const App: React.FC = () => {
   useEffect(() => {
     // Start the agent when component mounts
     if (canvasRef.current) {
-      startAgent('agent-canvas');
+      startAgent("agent-canvas");
     }
 
     // Cleanup when component unmounts
@@ -26,12 +27,14 @@ const App: React.FC = () => {
   const handleInstallPWA = () => {
     // PWA installation is handled by the browser's install prompt
     // This will trigger the browser's native PWA install dialog
-    console.log('PWA install requested');
+    console.log("PWA install requested");
   };
 
   const handleDownloadExtension = () => {
     // For now, show instructions for manual installation
-    alert('Extension download coming soon! For now, you can build it manually:\n\n1. Run: npm run build:extension\n2. Load the extension-dist folder in Chrome\n3. Enable Developer Mode in chrome://extensions/');
+    alert(
+      "Extension download coming soon! For now, you can build it manually:\n\n1. Run: npm run build:extension\n2. Load the extension-dist folder in Chrome\n3. Enable Developer Mode in chrome://extensions/"
+    );
   };
 
   return (
@@ -49,31 +52,34 @@ const App: React.FC = () => {
             <div className="card">
               <h2>Experience the Future of AI Interaction</h2>
               <p>
-                Meet your personal 3D AI assistant with advanced voice capabilities. 
-                Interact naturally through text or voice, and watch your assistant respond with lifelike animations.
+                Meet your personal 3D AI assistant with advanced voice
+                capabilities. Interact naturally through text or voice, and
+                watch your assistant respond with lifelike animations.
               </p>
               <p>
-                🚀 <strong>Install Agentic Assistant!</strong> Get instant access to your AI assistant on any device. 
-                Available as a Progressive Web App (PWA) for mobile and desktop, plus a Chrome extension for desktop users.
+                🚀 <strong>Install Agentic Assistant!</strong> Get instant
+                access to your AI assistant on any device. Available as a
+                Progressive Web App (PWA) for mobile and desktop, plus a Chrome
+                extension for desktop users.
               </p>
-              
+
               <div className="install-options">
                 <div className="install-option">
                   <h4>📱 Mobile & Desktop PWA</h4>
-                  <p>Install as a native app on your device for the best experience.</p>
-                  <button 
-                    className="btn pwa-btn"
-                    onClick={handleInstallPWA}
-                  >
+                  <p>
+                    Install as a native app on your device for the best
+                    experience.
+                  </p>
+                  <button className="btn pwa-btn" onClick={handleInstallPWA}>
                     📲 Install PWA
                   </button>
                 </div>
-                
+
                 {isDesktop && (
                   <div className="install-option">
                     <h4>🔌 Chrome Extension</h4>
                     <p>Get instant access on any website while browsing.</p>
-                    <button 
+                    <button
                       className="btn extension-btn"
                       onClick={handleDownloadExtension}
                     >
@@ -94,7 +100,10 @@ const App: React.FC = () => {
               <div className="features-grid">
                 <div className="feature">
                   <h4>🎭 3D Avatar</h4>
-                  <p>Interactive 3D character with smooth animations and realistic movements</p>
+                  <p>
+                    Interactive 3D character with smooth animations and
+                    realistic movements
+                  </p>
                 </div>
                 <div className="feature">
                   <h4>🗣️ Voice Interaction</h4>
@@ -102,7 +111,9 @@ const App: React.FC = () => {
                 </div>
                 <div className="feature">
                   <h4>🤖 AI Powered</h4>
-                  <p>Advanced AI conversations powered by OpenAI's latest models</p>
+                  <p>
+                    Advanced AI conversations powered by OpenAI's latest models
+                  </p>
                 </div>
                 <div className="feature">
                   <h4>📱 Cross-Platform</h4>
@@ -111,6 +122,15 @@ const App: React.FC = () => {
               </div>
             </div>
           </div>
+
+          {/* Voice Selection Section - Development Only */}
+          {import.meta.env.DEV && (
+            <div className="voice-section">
+              <div className="card">
+                <VoiceSelector />
+              </div>
+            </div>
+          )}
 
           {/* Main Interactive Section - Avatar and Chat Side by Side */}
           <div className="main-interactive-section">
@@ -148,4 +168,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App; 
+export default App;

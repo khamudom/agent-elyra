@@ -1,7 +1,7 @@
-import React, { useState, useRef } from 'react';
-import VoiceInput from './VoiceInput';
-import { openAIService } from '../agent/openai-service';
-import { startVoiceResponse } from '../agent/utils';
+import React, { useState, useRef } from "react";
+import VoiceInput from "./VoiceInput";
+import { openAIService } from "../agent/openai-service";
+import { startVoiceResponse, stopVoiceResponse } from "../agent/utils";
 
 interface ChatMessage {
   id: string;
@@ -12,7 +12,7 @@ interface ChatMessage {
 
 const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -22,9 +22,9 @@ const ChatInterface: React.FC = () => {
       id: Date.now().toString(),
       text,
       isUser,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
-    setMessages(prev => [...prev, newMessage]);
+    setMessages((prev) => [...prev, newMessage]);
   };
 
   const handleSendMessage = async (text: string) => {
@@ -32,22 +32,23 @@ const ChatInterface: React.FC = () => {
 
     const userMessage = text.trim();
     addMessage(userMessage, true);
-    setInputText('');
+    setInputText("");
     setIsLoading(true);
     setError(null);
 
     try {
       const response = await openAIService.sendMessage(userMessage);
-      
+
       if (response.error) {
         setError(response.error);
       } else {
         addMessage(response.message, false);
-        // Speak the response
-        startVoiceResponse(response.message);
+        // Speak the response with current voice preference
+        const currentVoice = localStorage.getItem("preferred-voice") || "fable";
+        startVoiceResponse(response.message, currentVoice);
       }
     } catch (err) {
-      setError('Failed to get response. Please try again.');
+      setError("Failed to get response. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -73,14 +74,14 @@ const ChatInterface: React.FC = () => {
   };
 
   const formatTime = (date: Date) => {
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   };
 
   return (
     <div className="chat-interface">
       <div className="chat-header">
         <h3>Chat with AI Assistant</h3>
-        <button 
+        <button
           className="clear-chat-btn"
           onClick={clearChat}
           title="Clear conversation"
@@ -96,19 +97,34 @@ const ChatInterface: React.FC = () => {
             <p>You can type your message or use the microphone to speak.</p>
           </div>
         )}
-        
+
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`message ${message.isUser ? 'user-message' : 'assistant-message'}`}
+            className={`message ${
+              message.isUser ? "user-message" : "assistant-message"
+            }`}
           >
             <div className="message-content">
               <p>{message.text}</p>
-              <span className="message-time">{formatTime(message.timestamp)}</span>
+              <div className="message-footer">
+                <span className="message-time">
+                  {formatTime(message.timestamp)}
+                </span>
+                {!message.isUser && (
+                  <button
+                    className="quiet-button"
+                    onClick={stopVoiceResponse}
+                    title="Stop agent from talking"
+                  >
+                    🤫
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
-        
+
         {isLoading && (
           <div className="message assistant-message">
             <div className="message-content">
@@ -120,14 +136,12 @@ const ChatInterface: React.FC = () => {
             </div>
           </div>
         )}
-        
+
         {error && (
           <div className="error-message">
             <p>⚠️ {error}</p>
           </div>
         )}
-        
-
       </div>
 
       <div className="chat-input-container">
@@ -141,8 +155,8 @@ const ChatInterface: React.FC = () => {
             disabled={isLoading}
             className="text-input"
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={isLoading || !inputText.trim()}
             className="send-button"
           >
@@ -158,4 +172,4 @@ const ChatInterface: React.FC = () => {
   );
 };
 
-export default ChatInterface; 
+export default ChatInterface;
