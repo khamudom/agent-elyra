@@ -193,15 +193,6 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          {/* Voice Selection Section - Development Only */}
-          {import.meta.env.DEV && (
-            <div className="voice-section">
-              <div className="card">
-                <VoiceSelector />
-              </div>
-            </div>
-          )}
-
           {/* Main Interactive Section - Avatar and Chat Side by Side */}
           <div className="main-interactive-section">
             <div className="interactive-layout">
@@ -225,13 +216,20 @@ const App: React.FC = () => {
               {/* Chat Section - Compact but functional */}
               <div className="chat-section">
                 <div className="card chat-card">
-                  <h3>💬 Chat with AI</h3>
-                  <p>Start a conversation:</p>
                   <ChatInterface />
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Voice Selection Section - Development Only */}
+          {import.meta.env.DEV && (
+            <div className="voice-section">
+              <div className="card">
+                <VoiceSelector />
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>

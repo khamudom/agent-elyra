@@ -1,7 +1,9 @@
 import React, { useState, useRef } from "react";
-import VoiceInput from "./VoiceInput";
-import { openAIService } from "../agent/openai-service";
-import { startVoiceResponse, stopVoiceResponse } from "../agent/utils";
+import VoiceInput from "../VoiceInput/VoiceInput";
+import { openAIService } from "../../agent/openai-service";
+import { startVoiceResponse, stopVoiceResponse } from "../../agent/utils";
+import styles from "./ChatInterface.module.css";
+import { MessageCircleOff } from "lucide-react";
 
 interface ChatMessage {
   id: string;
@@ -78,11 +80,11 @@ const ChatInterface: React.FC = () => {
   };
 
   return (
-    <div className="chat-interface">
-      <div className="chat-header">
+    <div className={styles.chatInterface}>
+      <div className={styles.chatHeader}>
         <h3>Chat with AI Assistant</h3>
         <button
-          className="clear-chat-btn"
+          className={styles.clearChatBtn}
           onClick={clearChat}
           title="Clear conversation"
         >
@@ -90,9 +92,9 @@ const ChatInterface: React.FC = () => {
         </button>
       </div>
 
-      <div className="chat-messages">
+      <div className={styles.chatMessages}>
         {messages.length === 0 && (
-          <div className="empty-state">
+          <div className={styles.emptyState}>
             <p>👋 Hi! I'm your AI assistant. Ask me anything!</p>
             <p>You can type your message or use the microphone to speak.</p>
           </div>
@@ -101,23 +103,23 @@ const ChatInterface: React.FC = () => {
         {messages.map((message) => (
           <div
             key={message.id}
-            className={`message ${
-              message.isUser ? "user-message" : "assistant-message"
+            className={`${styles.message} ${
+              message.isUser ? styles.userMessage : styles.assistantMessage
             }`}
           >
-            <div className="message-content">
+            <div className={styles.messageContent}>
               <p>{message.text}</p>
-              <div className="message-footer">
-                <span className="message-time">
+              <div className={styles.messageFooter}>
+                <span className={styles.messageTime}>
                   {formatTime(message.timestamp)}
                 </span>
                 {!message.isUser && (
                   <button
-                    className="quiet-button"
+                    className={styles.quietButton}
                     onClick={stopVoiceResponse}
                     title="Stop agent from talking"
                   >
-                    🤫
+                    <MessageCircleOff size={16}/>
                   </button>
                 )}
               </div>
@@ -126,9 +128,9 @@ const ChatInterface: React.FC = () => {
         ))}
 
         {isLoading && (
-          <div className="message assistant-message">
-            <div className="message-content">
-              <div className="typing-indicator">
+          <div className={`${styles.message} ${styles.assistantMessage}`}>
+            <div className={styles.messageContent}>
+              <div className={styles.typingIndicator}>
                 <span></span>
                 <span></span>
                 <span></span>
@@ -138,14 +140,14 @@ const ChatInterface: React.FC = () => {
         )}
 
         {error && (
-          <div className="error-message">
+          <div className={styles.errorMessage}>
             <p>⚠️ {error}</p>
           </div>
         )}
       </div>
 
-      <div className="chat-input-container">
-        <form onSubmit={handleTextSubmit} className="text-input-form">
+      <div className={styles.chatInputContainer}>
+        <form onSubmit={handleTextSubmit} className={styles.textInputForm}>
           <input
             ref={inputRef}
             type="text"
@@ -153,12 +155,12 @@ const ChatInterface: React.FC = () => {
             onChange={(e) => setInputText(e.target.value)}
             placeholder="Type your message..."
             disabled={isLoading}
-            className="text-input"
+            className={styles.textInput}
           />
           <button
             type="submit"
             disabled={isLoading || !inputText.trim()}
-            className="send-button"
+            className={styles.sendButton}
           >
             ➤
           </button>
@@ -172,4 +174,4 @@ const ChatInterface: React.FC = () => {
   );
 };
 
-export default ChatInterface;
+export default ChatInterface; 

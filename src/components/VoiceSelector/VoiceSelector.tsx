@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { speak } from "../agent/utils";
+import { speak } from "../../agent/utils";
+import styles from "./VoiceSelector.module.css";
 
 const VoiceSelector: React.FC = () => {
   const [selectedVoice, setSelectedVoice] = useState(() => {
@@ -22,35 +23,35 @@ const VoiceSelector: React.FC = () => {
   };
 
   return (
-    <div className="voice-selector">
+    <div className={styles.voiceSelector}>
       <h3>🎤 Voice Selection</h3>
-      <div className="voice-options">
+      <div className={styles.voiceOptions}>
         {voices.map((voice) => (
           <div
             key={voice.id}
-            className={`voice-option ${
-              selectedVoice === voice.id ? "selected" : ""
+            className={`${styles.voiceOption} ${
+              selectedVoice === voice.id ? styles.selected : ""
             }`}
             onClick={() => setSelectedVoice(voice.id)}
           >
-            <div className="voice-info">
+            <div className={styles.voiceInfo}>
               <h4>{voice.name}</h4>
               <p>{voice.description}</p>
             </div>
-            {selectedVoice === voice.id && <span className="checkmark">✓</span>}
+            {selectedVoice === voice.id && <span className={styles.checkmark}>✓</span>}
           </div>
         ))}
       </div>
 
-      <div className="test-section">
+      <div className={styles.testSection}>
         <textarea
           value={testText}
           onChange={(e) => setTestText(e.target.value)}
           placeholder="Enter text to test the voice..."
           rows={3}
         />
-        <div className="test-buttons">
-          <button onClick={testVoice} className="test-button">
+        <div className={styles.testButtons}>
+          <button onClick={testVoice} className={styles.testButton}>
             🎵 Test Voice
           </button>
           <button
@@ -58,7 +59,7 @@ const VoiceSelector: React.FC = () => {
               localStorage.setItem("preferred-voice", selectedVoice);
               alert(`Voice "${selectedVoice}" set as default!`);
             }}
-            className="set-default-button"
+            className={styles.setDefaultButton}
           >
             ⭐ Set as Default
           </button>
@@ -68,4 +69,4 @@ const VoiceSelector: React.FC = () => {
   );
 };
 
-export default VoiceSelector;
+export default VoiceSelector; 
