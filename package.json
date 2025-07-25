@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npx tsc && vite build && npm run build:extension",
+    "build": "npx tsc && vite build",
     "build:extension": "npx tsc && vite build --config vite.extension.config.ts",
+    "build:all": "npx tsc && vite build && npm run build:extension",
     "preview": "vite preview",
     "type-check": "npx tsc --noEmit"
   },

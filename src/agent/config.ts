@@ -37,7 +37,7 @@ export const AGENT_CONFIG: AgentConfig = {
     },
   },
   avatar: {
-    modelPath: "./models/characters/fox_character.glb",
+    modelPath: "/models/characters/fox_character.glb",
     position: new Vector3(0, -1.8, 0),
     scale: new Vector3(4, 4, 4),
   },
