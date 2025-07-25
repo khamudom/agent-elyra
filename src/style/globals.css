@@ -235,6 +235,8 @@ body {
 .main-interactive-section {
   margin-top: 3rem;
   margin-bottom: 2rem;
+  width: 100%;
+  overflow: hidden;
 }
 
 .main-interactive-section h3 {
@@ -255,6 +257,8 @@ body {
   gap: 2rem;
   align-items: start;
   min-height: 600px;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* ===== AVATAR SECTION ===== */
@@ -273,6 +277,8 @@ body {
   justify-content: center;
   padding: 1rem;
   min-height: 400px;
+  width: 100%;
+  max-width: 100%;
 }
 
 .agent-canvas {
@@ -299,12 +305,18 @@ body {
   height: 100%;
 }
 
-
-
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
   .app-header h1 {
     font-size: 2rem;
+  }
+
+  .app-header p {
+    font-size: 1rem;
+  }
+
+  .container {
+    padding: 0 0.75rem;
   }
 
   .install-options {
@@ -318,22 +330,28 @@ body {
   .interactive-layout {
     grid-template-columns: 1fr;
     gap: 1rem;
+    min-height: auto;
   }
 
   .avatar-section {
-    order: 2;
+    order: 1;
   }
 
   .avatar-container {
-    min-height: 300px;
+    min-height: 250px;
+    padding: 0.5rem;
   }
 
   .agent-canvas {
-    max-height: 300px;
+    max-height: 250px;
   }
 
   .chat-section {
-    order: 1;
+    order: 2;
+  }
+
+  .card {
+    padding: 1rem;
   }
 }
 
@@ -341,6 +359,7 @@ body {
   .interactive-layout {
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+    min-height: auto;
   }
 
   .avatar-section {
@@ -358,12 +377,17 @@ body {
   .chat-section {
     order: 2;
   }
+
+  .card {
+    padding: 1.25rem;
+  }
 }
 
 @media (min-width: 1200px) {
   .interactive-layout {
     grid-template-columns: 1.5fr 1fr;
     gap: 2rem;
+    min-height: 600px;
   }
 
   .avatar-section {

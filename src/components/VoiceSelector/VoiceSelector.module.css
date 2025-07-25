@@ -136,4 +136,10 @@
 
 .setDefaultButton:active {
   transform: translateY(0);
-} 
+}
+
+button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

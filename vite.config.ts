@@ -13,7 +13,8 @@ export default defineConfig({
       manifest: {
         name: "Agentic Assistant",
         short_name: "Agentic",
-        description: "An intelligent 3D assistant with Three.js avatar",
+        description:
+          "An intelligent 3D assistant with React Three Fiber avatar",
         theme_color: "#000000",
         background_color: "#ffffff",
         display: "standalone",
@@ -56,7 +57,7 @@ export default defineConfig({
             if (id.includes("react") || id.includes("react-dom")) {
               return "react-vendor";
             }
-            if (id.includes("three")) {
+            if (id.includes("three") || id.includes("@react-three")) {
               return "three-vendor";
             }
             return "vendor";
@@ -67,6 +68,12 @@ export default defineConfig({
   },
   // Optimize dependencies
   optimizeDeps: {
-    include: ["react", "react-dom", "three"],
+    include: [
+      "react",
+      "react-dom",
+      "three",
+      "@react-three/fiber",
+      "@react-three/drei",
+    ],
   },
 });

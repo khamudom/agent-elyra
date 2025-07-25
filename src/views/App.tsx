@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
-import { startAgent, cleanupAgent } from "../agent";
+import React, { useEffect, useState } from "react";
+import { Agent } from "../agent";
 import ChatInterface from "../components/ChatInterface";
 import VoiceSelector from "../components/VoiceSelector";
+import { Blocks, Rocket, Smartphone } from "lucide-react";
 
 const App: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDesktop, setIsDesktop] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallButton, setShowInstallButton] = useState(false);
@@ -51,18 +51,6 @@ const App: React.FC = () => {
     };
   }, []);
 
-  useEffect(() => {
-    // Start the agent when component mounts
-    if (canvasRef.current) {
-      startAgent("agent-canvas");
-    }
-
-    // Cleanup when component unmounts
-    return () => {
-      cleanupAgent();
-    };
-  }, []);
-
   const handleInstallPWA = async () => {
     if (!deferredPrompt) {
       // Fallback for browsers that don't support beforeinstallprompt
@@ -100,7 +88,7 @@ const App: React.FC = () => {
     <div className="app">
       <header className="app-header">
         <div className="container">
-          <h1>Agentic Assistant</h1>
+          <h1>Luminora</h1>
           <p>Your intelligent 3D AI companion with voice interaction</p>
         </div>
       </header>
@@ -116,27 +104,32 @@ const App: React.FC = () => {
                 watch your assistant respond with lifelike animations.
               </p>
               <p>
-                🚀 <strong>Install Agentic Assistant!</strong> Get instant
-                access to your AI assistant on any device. Available as a
-                Progressive Web App (PWA) for mobile and desktop, plus a Chrome
-                extension for desktop users.
+                <Rocket size={20} />
+                <strong>Install Agentic Assistant!</strong> Get instant access
+                to your AI assistant on any device. Available as a Progressive
+                Web App (PWA) for mobile and desktop, plus a Chrome extension
+                for desktop users.
               </p>
 
               <div className="install-options">
                 {showInstallButton ? (
                   <div className="install-option">
-                    <h4>📱 Mobile & Desktop PWA</h4>
+                    <h4>
+                      <Smartphone size={20} /> Mobile & Desktop PWA
+                    </h4>
                     <p>
                       Install as a native app on your device for the best
                       experience.
                     </p>
                     <button className="btn pwa-btn" onClick={handleInstallPWA}>
-                      📲 Install PWA
+                      <Smartphone size={20} /> Install PWA
                     </button>
                   </div>
                 ) : (
                   <div className="install-option">
-                    <h4>📱 Mobile & Desktop PWA</h4>
+                    <h4>
+                      <Smartphone size={20} /> Mobile & Desktop PWA
+                    </h4>
                     <p>
                       This app can be installed as a PWA. Look for the "Add to
                       Home Screen" option in your browser's menu, or the install
@@ -147,13 +140,15 @@ const App: React.FC = () => {
 
                 {isDesktop && (
                   <div className="install-option">
-                    <h4>🔌 Chrome Extension</h4>
+                    <h4>
+                      <Blocks size={20} /> Chrome Extension
+                    </h4>
                     <p>Get instant access on any website while browsing.</p>
                     <button
                       className="btn extension-btn"
                       onClick={handleDownloadExtension}
                     >
-                      🔌 Download Extension
+                      <Blocks size={20} /> Download Extension
                     </button>
                     <small className="extension-note">
                       Manual installation required for now
@@ -169,24 +164,24 @@ const App: React.FC = () => {
               <h3>✨ Key Features</h3>
               <div className="features-grid">
                 <div className="feature">
-                  <h4>🎭 3D Avatar</h4>
+                  <h4>3D Avatar</h4>
                   <p>
                     Interactive 3D character with smooth animations and
                     realistic movements
                   </p>
                 </div>
                 <div className="feature">
-                  <h4>🗣️ Voice Interaction</h4>
+                  <h4>Voice Interaction</h4>
                   <p>Natural speech-to-text and text-to-speech capabilities</p>
                 </div>
                 <div className="feature">
-                  <h4>🤖 AI Powered</h4>
+                  <h4>AI Powered</h4>
                   <p>
                     Advanced AI conversations powered by OpenAI's latest models
                   </p>
                 </div>
                 <div className="feature">
-                  <h4>📱 Cross-Platform</h4>
+                  <h4>Cross-Platform</h4>
                   <p>Works on mobile, desktop, and as a browser extension</p>
                 </div>
               </div>
@@ -199,15 +194,14 @@ const App: React.FC = () => {
               {/* Avatar Section - Takes up more space */}
               <div className="avatar-section">
                 <div className="card avatar-card">
-                  <h3>🎮 Your AI Assistant</h3>
-                  <p>Interact with your 3D companion:</p>
+                  <h3>Your Lume</h3>
+                  <p>Interact with your Lume</p>
                   <div className="avatar-container">
-                    <canvas
-                      ref={canvasRef}
-                      id="agent-canvas"
+                    <Agent
                       className="agent-canvas"
-                      width="800"
-                      height="600"
+                      style={{ width: "100%", height: "600px" }}
+                      onLoad={() => console.log("Agent loaded successfully")}
+                      onError={(error) => console.error("Agent error:", error)}
                     />
                   </div>
                 </div>
@@ -223,13 +217,18 @@ const App: React.FC = () => {
           </div>
 
           {/* Voice Selection Section - Development Only */}
-          {import.meta.env.DEV && (
+          {/* {import.meta.env.DEV && (
             <div className="voice-section">
               <div className="card">
                 <VoiceSelector />
               </div>
             </div>
-          )}
+          )} */}
+          <div className="voice-section">
+            <div className="card">
+              <VoiceSelector />
+            </div>
+          </div>
         </div>
       </main>
     </div>

@@ -53,6 +53,7 @@
 }
 
 .voiceIcon {
+  display: flex;
   transition: all 0.3s ease;
 }
 
@@ -73,8 +74,8 @@
   cursor: pointer;
   font-size: 0.875rem;
   transition: all 0.2s ease;
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,4 +109,4 @@
     height: 40px;
     font-size: 1rem;
   }
-} 
+}

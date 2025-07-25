@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import VoiceInput from "../VoiceInput/VoiceInput";
 import { openAIService } from "../../agent/openai-service";
 import { startVoiceResponse, stopVoiceResponse } from "../../agent/utils";
 import styles from "./ChatInterface.module.css";
-import { MessageCircleOff } from "lucide-react";
+import { MessageCircleOff, SquarePen } from "lucide-react";
 
 interface ChatMessage {
   id: string;
@@ -18,6 +18,18 @@ const ChatInterface: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
 
   const addMessage = (text: string, isUser: boolean) => {
     const newMessage: ChatMessage = {
@@ -82,17 +94,17 @@ const ChatInterface: React.FC = () => {
   return (
     <div className={styles.chatInterface}>
       <div className={styles.chatHeader}>
-        <h3>Chat with AI Assistant</h3>
+        <h3>Chat with Lume</h3>
         <button
           className={styles.clearChatBtn}
           onClick={clearChat}
           title="Clear conversation"
         >
-          🗑️ Clear
+          <SquarePen size={20} />
         </button>
       </div>
 
-      <div className={styles.chatMessages}>
+      <div className={styles.chatMessages} ref={messagesContainerRef}>
         {messages.length === 0 && (
           <div className={styles.emptyState}>
             <p>👋 Hi! I'm your AI assistant. Ask me anything!</p>
@@ -119,7 +131,7 @@ const ChatInterface: React.FC = () => {
                     onClick={stopVoiceResponse}
                     title="Stop agent from talking"
                   >
-                    <MessageCircleOff size={16}/>
+                    <MessageCircleOff size={16} />
                   </button>
                 )}
               </div>
@@ -174,4 +186,4 @@ const ChatInterface: React.FC = () => {
   );
 };
 
-export default ChatInterface; 
+export default ChatInterface;

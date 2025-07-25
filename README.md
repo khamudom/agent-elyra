@@ -1,6 +1,6 @@
 # Agentic Assistant
 
-An intelligent 3D assistant app with AI chat capabilities, built with Vite, React, TypeScript, and Three.js. Works as both a Progressive Web App (PWA) and Chrome Extension with optimized performance and modern features.
+An intelligent 3D assistant app with AI chat capabilities, built with Vite, React, TypeScript, and React Three Fiber. Works as both a Progressive Web App (PWA) and Chrome Extension with optimized performance and modern features.
 
 **Author:** Agentic Assistant Team  
 **Version:** 1.0.0  
@@ -8,7 +8,7 @@ An intelligent 3D assistant app with AI chat capabilities, built with Vite, Reac
 
 ## ✨ Features
 
-- 🤖 **3D Avatar**: Interactive Three.js avatar with smooth animations and GLB model support
+- 🤖 **3D Avatar**: Interactive React Three Fiber avatar with smooth animations and GLB model support
 - 🗣️ **Voice Interaction**: Web Speech API for voice input and AI responses
 - 💬 **AI Chat**: OpenAI integration for intelligent conversations
 - 📱 **PWA Ready**: Installable as a Progressive Web App with offline support
@@ -21,24 +21,27 @@ An intelligent 3D assistant app with AI chat capabilities, built with Vite, Reac
 
 ### Prerequisites
 
-- **Node.js 18+** 
+- **Node.js 18+**
 - **npm** (comes with Node.js)
 - **OpenAI API Key** (for AI chat features)
 
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <repository-url>
    cd agent-elyra
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
+
    ```bash
    # Create .env file
    echo "VITE_OPENAI_API_KEY=your_openai_api_key_here" > .env
@@ -54,124 +57,77 @@ An intelligent 3D assistant app with AI chat capabilities, built with Vite, Reac
 
 ### Available Scripts
 
-| Command | Description | Output |
-|---------|-------------|---------|
-| `npm run dev` | Start PWA development server | `http://localhost:5173` |
-| `npm run build` | Build PWA for production | `dist/` folder |
-| `npm run build:extension` | Build Chrome extension | `extension-dist/` folder |
-| `npm run preview` | Preview PWA production build | Local server |
-| `npm run type-check` | Run TypeScript type checking | Console output |
-
-### PWA Development
-
-The main app runs as a Progressive Web App:
-
-```bash
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-### Chrome Extension Development
-
-Build and load the Chrome Extension:
-
-```bash
-# Build extension
-npm run build:extension
-```
-
-## 🔌 Chrome Extension Setup
-
-### Step-by-Step Loading Instructions
-
-1. **Build the extension**
-   ```bash
-   npm run build:extension
-   ```
-
-2. **Open Chrome Extensions**
-   - Go to `chrome://extensions/`
-   - Or: **Chrome Menu** → **More Tools** → **Extensions**
-
-3. **Enable Developer Mode**
-   - Toggle **"Developer mode"** to **ON** (top-right corner)
-
-4. **Load the Extension**
-   - Click **"Load unpacked"**
-   - Navigate to: `C:\Users\khamu\Repos\Agentic\agent-elyra\extension-dist`
-   - Select the `extension-dist` folder
-   - Click **"Select Folder"**
-
-5. **Verify Installation**
-   - **"Agentic Assistant"** should appear in your extensions list
-   - The **fox icon** should appear in your Chrome toolbar
-   - Click the icon to open the popup
-
-### Extension Features
-
-- **Compact 3D Assistant**: Available in a popup from any webpage
-- **Voice Interaction**: Click the speak button for voice responses
-- **Cross-Site Functionality**: Works on any website you visit
-- **Persistent Access**: Available across all your browsing sessions
+| Command                   | Description                  | Output                   |
+| ------------------------- | ---------------------------- | ------------------------ |
+| `npm run dev`             | Start PWA development server | `http://localhost:5173`  |
+| `npm run build`           | Build PWA for production     | `dist/` folder           |
+| `npm run build:extension` | Build Chrome extension       | `extension-dist/` folder |
+| `npm run preview`         | Preview PWA production build | Local server             |
+| `npm run type-check`      | TypeScript type checking     | Console output           |
 
 ## 📁 Project Structure
 
 ```
-agentic-assistant/
-├── public/
-│   ├── manifest.web.json             # PWA manifest
-│   ├── manifest.extension.json       # Chrome Extension manifest
-│   ├── foxicon.jpg                   # App icon
-│   ├── sw.js                         # Service worker
-│   ├── models/                       # 3D models
-│   └── textures/                     # Texture files
+agent-elyra/
 ├── src/
-│   ├── agent/
-│   │   ├── index.ts                  # Three.js agent initialization
-│   │   ├── openai-service.ts         # OpenAI API integration
-│   │   ├── utils.ts                  # Voice and animation utilities
-│   │   └── avatar.glb                # 3D model
+│   ├── agent/                    # 3D Agent System (React Three Fiber)
+│   │   ├── components/           # Reusable 3D components
+│   │   │   ├── Avatar.tsx        # GLB model loader with fallback
+│   │   │   ├── Camera.tsx        # Camera controls
+│   │   │   ├── Lighting.tsx      # Scene lighting setup
+│   │   │   ├── Scene.tsx         # Main scene orchestrator
+│   │   │   └── index.ts          # Component exports
+│   │   ├── Agent.tsx             # Main Agent component
+│   │   ├── config.ts             # Agent configuration
+│   │   ├── types.ts              # TypeScript type definitions
+│   │   ├── index.ts              # Main exports
+│   │   ├── openai-service.ts     # OpenAI API integration
+│   │   └── utils.ts              # Voice and animation utilities
 │   ├── components/
-│   │   ├── ChatInterface.tsx         # AI chat interface
-│   │   └── VoiceInput.tsx            # Voice input component
+│   │   ├── ChatInterface/        # AI chat interface
+│   │   ├── VoiceInput/           # Voice input component
+│   │   └── VoiceSelector/        # Voice selection component
 │   ├── views/
-│   │   ├── App.tsx                   # Main PWA UI
-│   │   └── ExtensionUI.tsx           # Chrome Extension popup UI
-│   ├── index.tsx                     # PWA entry point
+│   │   ├── App.tsx               # Main PWA UI
+│   │   └── ExtensionUI.tsx       # Chrome Extension popup UI
+│   ├── index.tsx                 # PWA entry point
 │   └── style/
-│       └── globals.css               # Global styles
+│       ├── extension.css         # Extension styles
+│       └── globals.css           # Global styles
 ├── extension/
-│   ├── index.html                    # Extension popup HTML
-│   ├── popup.tsx                     # Extension popup entry
-│   ├── background.ts                 # Extension background script
-│   ├── content.ts                    # Extension content script
-│   └── inject.ts                     # Agent injection script
-├── vite.config.ts                    # Main Vite config (PWA)
-├── vite.extension.config.ts          # Extension build config
-├── tsconfig.json                     # TypeScript config
-├── package.json                      # Dependencies and scripts
-└── README.md                         # This file
+│   ├── index.html                # Extension popup HTML
+│   ├── popup.tsx                 # Extension popup entry
+│   ├── background.ts             # Extension background script
+│   ├── content.ts                # Extension content script
+│   ├── inject.ts                 # Agent injection script
+│   └── manifest.json             # Extension manifest
+├── public/
+│   ├── models/characters/        # 3D model assets
+│   │   └── fox_character.glb     # Main avatar model
+│   └── foxicon.jpg               # App icon
+├── vite.config.ts                # Main Vite config (PWA)
+├── vite.extension.config.ts      # Extension build config
+├── tsconfig.json                 # TypeScript config
+├── package.json                  # Dependencies and scripts
+└── README.md                     # This file
 ```
 
 ## 🎯 Key Components
 
 ### Agent System (`src/agent/`)
 
-- **`index.ts`**: Three.js scene setup with GLB model loading
+- **`Agent.tsx`**: Main React Three Fiber component with error boundaries and performance optimizations
+- **`components/`**: Modular 3D components (Avatar, Camera, Lighting, Scene)
+- **`config.ts`**: Centralized configuration with proper TypeScript types
+- **`types.ts`**: Comprehensive type definitions for type safety
 - **`openai-service.ts`**: OpenAI API integration for AI responses
 - **`utils.ts`**: Voice synthesis and animation utilities
-- **`avatar.glb`**: 3D model for the assistant
 
 ### Chat System (`src/components/`)
 
 - **`ChatInterface.tsx`**: Full-featured AI chat with message history
 - **`VoiceInput.tsx`**: Voice recording and transcription component
+- **`VoiceSelector.tsx`**: Voice selection for text-to-speech
 
 ### Views (`src/views/`)
 
@@ -182,10 +138,18 @@ agentic-assistant/
 
 - **`background.ts`**: Extension background script for state management
 - **`content.ts`**: Content script for webpage injection
-- **`inject.ts`**: Agent injection utilities
+- **`inject.ts`**: Agent injection utilities (compatibility layer)
 - **`popup.tsx`**: Extension popup interface
 
 ## ⚡ Performance Optimizations
+
+### React Three Fiber Optimizations
+
+- **Suspense**: Proper loading states with fallback components
+- **Error Boundaries**: Graceful error handling for 3D rendering failures
+- **Memoization**: Optimized re-renders with useCallback and useMemo
+- **Lazy Loading**: GLB models loaded with Suspense
+- **WebGL Context Management**: Proper context loss handling
 
 ### Build Optimizations
 
@@ -198,33 +162,38 @@ agentic-assistant/
 
 ```
 Extension Build Output:
-├── react-vendor-[hash].js     # React & ReactDOM (133 KB)
-├── three-vendor-[hash].js     # Three.js library (548 KB)
-├── vendor-[hash].js           # Other dependencies (3.9 KB)
-├── popup.js                   # Main extension logic (1.9 KB)
-├── content.js                 # Content script (2.6 KB)
-├── background.js              # Background service worker (621 B)
+├── react-vendor-[hash].js     # React & ReactDOM (294 KB)
+├── three-vendor-[hash].js     # Three.js & React Three Fiber (745 KB)
+├── vendor-[hash].js           # Other dependencies (111 KB)
+├── popup.js                   # Main extension logic (18 KB)
+├── content.js                 # Content script (0.07 KB)
+├── background.js              # Background service worker (0.29 KB)
 └── manifest.json              # Extension manifest
 ```
 
 ## 🎨 UI Features
 
 ### Welcome Section
+
 - **Extension Install Button**: One-click Chrome extension installation
 - **Feature Highlights**: Showcases 3D avatar, voice response, and PWA capabilities
 - **Modern Design**: Gradient backgrounds and smooth animations
 
 ### Chat Interface
+
 - **Real-time AI Responses**: OpenAI integration for intelligent conversations
 - **Voice Input/Output**: Speech-to-text and text-to-speech capabilities
 - **Message History**: Persistent conversation tracking
 - **Loading States**: Smooth typing indicators and error handling
 
-### 3D Avatar
-- **GLB Model Support**: Loads custom 3D models
+### 3D Avatar (React Three Fiber)
+
+- **GLB Model Support**: Loads custom 3D models with proper error handling
 - **Smooth Animations**: Continuous rotation and interactive movements
 - **Responsive Design**: Adapts to different screen sizes
 - **WebGL Optimized**: 60fps performance with efficient rendering
+- **Error Recovery**: Graceful fallback to geometric avatar on model failure
+- **Performance Monitoring**: WebGL context loss detection and recovery
 
 ## 🔧 Configuration
 
@@ -236,9 +205,27 @@ Create a `.env` file in the root directory:
 VITE_OPENAI_API_KEY=your_openai_api_key_here
 ```
 
+### Agent Configuration
+
+The 3D agent is configured in `src/agent/config.ts`:
+
+```typescript
+export const AGENT_CONFIG: AgentConfig = {
+  camera: {
+    fov: 75,
+    near: 0.1,
+    far: 1000,
+    initialPosition: new Vector3(0, 0, 3),
+    target: new Vector3(0, 0, 0),
+  },
+  // ... more configuration
+};
+```
+
 ### PWA Configuration
 
 Configured in `vite.config.ts`:
+
 - Service worker for offline support
 - Web app manifest for installation
 - Auto-update registration
@@ -247,6 +234,7 @@ Configured in `vite.config.ts`:
 ### Extension Configuration
 
 Uses Manifest V3 with:
+
 - Background service worker
 - Content script injection
 - Popup interface
@@ -258,7 +246,7 @@ Uses Manifest V3 with:
 ### Web Speech API Integration
 
 ```typescript
-import { startVoiceResponse } from './src/agent/utils';
+import { startVoiceResponse } from "./src/agent/utils";
 
 // Trigger voice response
 startVoiceResponse("Hello! I'm your 3D assistant.");
@@ -273,18 +261,20 @@ startVoiceResponse("Hello! I'm your 3D assistant.");
 ## 🎭 Animation System
 
 The 3D avatar features:
-- **GLB Model Loading**: Support for custom 3D models
+
+- **GLB Model Loading**: Support for custom 3D models with Suspense
 - **Smooth Animations**: Continuous rotation and movement
 - **Interactive Controls**: Mouse and touch interactions
 - **Responsive Scaling**: Adapts to container size
 - **Performance Optimized**: Efficient rendering pipeline
+- **Error Recovery**: Automatic fallback to geometric avatar
 
 ## 🌐 Browser Support
 
 - **PWA**: Modern browsers with PWA support (Chrome, Firefox, Safari, Edge)
 - **Extension**: Chrome/Chromium-based browsers
 - **Voice**: Browsers with Web Speech API support
-- **3D**: WebGL-enabled browsers
+- **3D**: WebGL-enabled browsers with React Three Fiber support
 
 ## 🚀 Building for Production
 
@@ -295,6 +285,7 @@ npm run build
 ```
 
 Creates `dist/` folder with:
+
 - Optimized JavaScript bundles with code splitting
 - Service worker for offline support
 - Web app manifest
@@ -307,6 +298,7 @@ npm run build:extension
 ```
 
 Creates `extension-dist/` folder with:
+
 - Compiled extension scripts
 - Optimized manifest file
 - HTML popup with proper paths
@@ -316,33 +308,38 @@ Creates `extension-dist/` folder with:
 
 ### Common Issues
 
-1. **Extension won't load**: 
+1. **Extension won't load**:
+
    - Ensure `manifest.json` is in the root of `extension-dist/`
    - Check that all referenced files exist
    - Verify Chrome developer mode is enabled
 
-2. **Voice not working**: 
+2. **Voice not working**:
+
    - Ensure browser supports Web Speech API
    - Check microphone permissions
    - Test on HTTPS (required for voice features)
 
-3. **AI chat not responding**: 
+3. **AI chat not responding**:
+
    - Verify OpenAI API key is set in `.env`
    - Check network connectivity
    - Review browser console for errors
 
-4. **3D not rendering**: 
+4. **3D not rendering**:
    - Verify WebGL support in browser
    - Check for graphics driver updates
    - Ensure 3D model files are accessible
+   - Check for React Three Fiber compatibility
 
 ### Development Tips
 
-- Use browser dev tools to debug Three.js scenes
+- Use React DevTools to debug React Three Fiber components
 - Check extension background page for errors
 - Monitor service worker in Application tab
 - Test PWA installation on HTTPS
 - Use `npm run type-check` for TypeScript validation
+- Monitor WebGL context in browser dev tools
 
 ## 🤝 Contributing
 
@@ -373,8 +370,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
+- **React Three Fiber** for declarative 3D graphics
 - **Three.js** for 3D graphics capabilities
 - **OpenAI** for AI chat integration
 - **Vite** for fast build tooling
 - **React** for component architecture
-- **TypeScript** for type safety 
+- **TypeScript** for type safety

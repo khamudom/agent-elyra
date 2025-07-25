@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { copyFileSync, existsSync } from "fs";
+import { copyFileSync, existsSync, readFileSync, writeFileSync } from "fs";
 import { resolve } from "path";
 
 // Configuration constants
@@ -24,7 +24,7 @@ const EXTENSION_CONFIG = {
 } as const;
 
 export default defineConfig({
-  base: "./", // Use relative paths for extension
+  base: "", // Use absolute paths for extension
   plugins: [
     react(),
     {
@@ -47,12 +47,19 @@ export default defineConfig({
           console.error("❌ Manifest.json not found in extension/ directory");
         }
 
-        // Copy index.html from extension subdirectory to root
+        // Copy index.html from extension subdirectory to root and fix paths
         const indexSrc = resolve(__dirname, EXTENSION_CONFIG.FILES.INDEX_SRC);
         const indexDest = resolve(__dirname, EXTENSION_CONFIG.FILES.INDEX_DEST);
 
         if (existsSync(indexSrc)) {
-          copyFileSync(indexSrc, indexDest);
+          // Read the HTML content and fix the paths
+          let htmlContent = readFileSync(indexSrc, "utf8");
+
+          // Replace ../ paths with ./ paths since we're moving to root
+          htmlContent = htmlContent.replace(/src="\.\.\//g, 'src="./');
+          htmlContent = htmlContent.replace(/href="\.\.\//g, 'href="./');
+
+          writeFileSync(indexDest, htmlContent);
           console.log("✅ index.html copied to extension-dist/ root");
         } else {
           console.error(
@@ -96,7 +103,7 @@ export default defineConfig({
             if (id.includes("react") || id.includes("react-dom")) {
               return "react-vendor";
             }
-            if (id.includes("three")) {
+            if (id.includes("three") || id.includes("@react-three")) {
               return "three-vendor";
             }
             return "vendor";
@@ -105,8 +112,15 @@ export default defineConfig({
       },
     },
   },
-  // Optimize dependencies
+  resolve: {
+    alias: {
+      react: resolve(__dirname, "node_modules/react"),
+      "react-dom": resolve(__dirname, "node_modules/react-dom"),
+    },
+    dedupe: ["react", "react-dom"],
+  },
   optimizeDeps: {
-    include: ["react", "react-dom", "three"],
+    include: ["react", "react-dom", "@react-three/fiber", "@react-three/drei"],
+    exclude: [],
   },
 });

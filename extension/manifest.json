@@ -3,12 +3,7 @@
   "name": "Agentic Assistant",
   "version": "1.0.0",
   "description": "An intelligent 3D assistant with Three.js avatar",
-  "permissions": [
-    "activeTab",
-    "storage",
-    "tabs",
-    "scripting"
-  ],
+  "permissions": ["activeTab", "storage", "tabs", "scripting"],
   "action": {
     "default_popup": "index.html",
     "default_title": "Agentic Assistant"
@@ -25,14 +20,11 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["inject.js"],
+      "resources": ["inject.js", "models/*"],
       "matches": ["<all_urls>"]
     }
   ],
-  "host_permissions": [
-    "<all_urls>",
-    "https://api.openai.com/*"
-  ],
+  "host_permissions": ["<all_urls>", "https://api.openai.com/*"],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'; media-src 'self' blob:;"
   },
@@ -41,4 +33,4 @@
     "48": "foxicon.jpg",
     "128": "foxicon.jpg"
   }
-} 
+}

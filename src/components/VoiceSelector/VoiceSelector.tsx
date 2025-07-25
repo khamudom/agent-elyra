@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { speak } from "../../agent/utils";
 import styles from "./VoiceSelector.module.css";
+import { MicVocal, Music, Star } from "lucide-react";
 
 const VoiceSelector: React.FC = () => {
   const [selectedVoice, setSelectedVoice] = useState(() => {
@@ -24,7 +25,9 @@ const VoiceSelector: React.FC = () => {
 
   return (
     <div className={styles.voiceSelector}>
-      <h3>🎤 Voice Selection</h3>
+      <h3>
+        <MicVocal size={20} /> Voice Selection
+      </h3>
       <div className={styles.voiceOptions}>
         {voices.map((voice) => (
           <div
@@ -38,7 +41,9 @@ const VoiceSelector: React.FC = () => {
               <h4>{voice.name}</h4>
               <p>{voice.description}</p>
             </div>
-            {selectedVoice === voice.id && <span className={styles.checkmark}>✓</span>}
+            {selectedVoice === voice.id && (
+              <span className={styles.checkmark}>✓</span>
+            )}
           </div>
         ))}
       </div>
@@ -52,7 +57,7 @@ const VoiceSelector: React.FC = () => {
         />
         <div className={styles.testButtons}>
           <button onClick={testVoice} className={styles.testButton}>
-            🎵 Test Voice
+            <Music size={20} /> Test Voice
           </button>
           <button
             onClick={() => {
@@ -61,7 +66,7 @@ const VoiceSelector: React.FC = () => {
             }}
             className={styles.setDefaultButton}
           >
-            ⭐ Set as Default
+            <Star size={20} /> Set as Default
           </button>
         </div>
       </div>
@@ -69,4 +74,4 @@ const VoiceSelector: React.FC = () => {
   );
 };
 
-export default VoiceSelector; 
+export default VoiceSelector;

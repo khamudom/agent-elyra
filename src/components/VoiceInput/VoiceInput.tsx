@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from "react";
 import { openAIService } from "../../agent/openai-service";
 import { stopVoiceResponse, isSpeaking } from "../../agent/utils";
 import styles from "./VoiceInput.module.css";
-import { Mic } from "lucide-react";
+import { CircleStop, Mic } from "lucide-react";
 
 // Configuration constants
 const VOICE_INPUT_CONFIG = {
@@ -233,9 +233,9 @@ const VoiceInput: React.FC<VoiceInputProps> = ({
       return "⏳";
     }
     if (state.isRecording) {
-      return <Mic size={20}/>;
+      return <Mic size={20} />;
     }
-    return <Mic size={20}/>;
+    return <Mic size={20} />;
   }, [state.isProcessing, state.isRecording]);
 
   const getStatusText = useCallback(() => {
@@ -254,15 +254,17 @@ const VoiceInput: React.FC<VoiceInputProps> = ({
     <div className={styles.voiceInput}>
       <div className={styles.voiceButtons}>
         <button
-          className={`${styles.voiceButton} ${state.isRecording ? styles.recording : ""} ${
-            state.isProcessing ? styles.processing : ""
-          }`}
+          className={`${styles.voiceButton} ${
+            state.isRecording ? styles.recording : ""
+          } ${state.isProcessing ? styles.processing : ""}`}
           onClick={handleButtonClick}
           disabled={state.isProcessing}
           title={getButtonTitle()}
         >
           <span
-            className={`${styles.voiceIcon} ${state.isRecording ? styles.recording : ""}`}
+            className={`${styles.voiceIcon} ${
+              state.isRecording ? styles.recording : ""
+            }`}
           >
             {getButtonIcon()}
           </span>
@@ -274,7 +276,7 @@ const VoiceInput: React.FC<VoiceInputProps> = ({
             onClick={cancelRecording}
             title="Cancel recording"
           >
-            ❌
+            <CircleStop size={20} />
           </button>
         )}
       </div>
@@ -285,4 +287,4 @@ const VoiceInput: React.FC<VoiceInputProps> = ({
   );
 };
 
-export default VoiceInput; 
+export default VoiceInput;
