@@ -54,9 +54,6 @@ export default defineConfig({
         manualChunks: (id) => {
           // Split vendor dependencies into separate chunks
           if (id.includes("node_modules")) {
-            if (id.includes("react") || id.includes("react-dom")) {
-              return "react-vendor";
-            }
             if (id.includes("three") || id.includes("@react-three")) {
               return "three-vendor";
             }
@@ -75,5 +72,6 @@ export default defineConfig({
       "@react-three/fiber",
       "@react-three/drei",
     ],
+    force: true, // Force re-optimization
   },
 });
